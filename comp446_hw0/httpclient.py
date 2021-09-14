@@ -49,8 +49,10 @@ class HttpClient:
             Params should be a dictionary of unencoded query parameters
             as an HttpResponse object. Please enter code below.
         """
-        
-        return ""
+        # referenced https://www.urlencoder.io/python/ for encoding using python
+        encodedData = urllib.parse.urlencode(params, quote_via=urllib.parse.quote_plus)
+        return self.doGet("?".join([path, encodedData]))
+
     
     def doPostWithParams(self, path, params):
         """
@@ -58,21 +60,33 @@ class HttpClient:
             Params should be a dictionary of unencoded query parameters
             as an HttpResponse object. Please enter code below.
         """
-        return ""
+        # referenced https://www.urlencoder.io/python/ for encoding using python
+        encodedData = urllib.parse.urlencode(params, quote_via=urllib.parse.quote_plus)
+        return self.doPost(path, encodedData)
     
     def _constructGetRequest(self, path):
         """
             Returns a string containing an HTTP 1.0 GET request
             for self.host and the requested path. Please enter code below.
         """
-        return ""
+        # Got some help with minor formatting errors from Izzy 
+        # Worked on the general appraoch with Ivy
+        rn = "\r\n"
+        return rn.join(["GET %s HTTP/1.0" % path, "Host: %s" % self.host, 
+        "User-Agent: COMP346Sen", "", ""])
     
     def _constructPostRequest(self, path, body):
         """
             Returns a string containing an HTTP 1.0 GET request
             for self.host and the requested path and body. Please enter code below.
         """
-        return ""
+        # Got some help with minor formatting errors from Ivy and Izzy
+        rn = "\r\n"
+        return rn.join(["POST %s HTTP/1.0" % path, "Host: %s" % self.host,
+        "User-Agent: COMP346Sen", 
+        "Content-Length: %d" % len(body),
+        "Content-Type: application/x-www-form-urlencoded", "", 
+        "%s" % body])
     
     def _writeRequest(self, request):
         """
